@@ -1,6 +1,6 @@
 Table pedido {
   id integer [primary key]
-  pessoa_id integer
+  cliente_id integer
   data_criacao timestamp 
   data_atualizacao timestamp 
 }
@@ -14,7 +14,7 @@ Table pedido_item {
   data_atualizacao timestamp 
 }
 
-Table pessoa {
+Table cliente {
   id integer [primary key]
   nome varchar
   data_criacao timestamp 
@@ -31,5 +31,5 @@ Table produto {
 
 Ref: pedido.id  < pedido_item.pedido_id
 Ref: produto.id < pedido_item.produto_id
-Ref: pessoa.id  < pedido.pessoa_id 
+Ref: cliente.id  < pedido.cliente_id 
 

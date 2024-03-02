@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @Builder
 @Entity
-@Table(name = "pessoa", schema = "public")
-public class Pessoa {
+@Table(name = "cliente", schema = "public")
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
