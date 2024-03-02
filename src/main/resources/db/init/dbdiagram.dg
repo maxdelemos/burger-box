@@ -1,0 +1,35 @@
+Table pedido {
+  id integer [primary key]
+  pessoa_id integer
+  data_criacao timestamp 
+  data_atualizacao timestamp 
+}
+
+Table pedido_item {
+  id integer [primary key]
+  pedido_id integer
+  produto_id integer
+  quantidade integer
+  data_criacao timestamp 
+  data_atualizacao timestamp 
+}
+
+Table pessoa {
+  id integer [primary key]
+  nome varchar
+  data_criacao timestamp 
+  data_atualizacao timestamp 
+}
+
+Table produto {
+  id integer [primary key]
+  nome varchar
+  valor double
+  data_criacao timestamp 
+  data_atualizacao timestamp 
+}
+
+Ref: pedido.id  < pedido_item.pedido_id
+Ref: produto.id < pedido_item.produto_id
+Ref: pessoa.id  < pedido.pessoa_id 
+

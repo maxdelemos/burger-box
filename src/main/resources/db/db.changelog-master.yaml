@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02032024-estrutura-inicial
+      author: maxmilian.lemos
+      changes:
+        - sqlFile:
+            path: evolutions/02032024-estrutura-inicial.sql
+            relativeToChangelogFile: true

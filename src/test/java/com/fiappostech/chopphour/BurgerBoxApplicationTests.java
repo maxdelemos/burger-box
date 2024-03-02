@@ -1,10 +1,10 @@
-package com.fiappostech.chopphour;
+package com.fiappostech.burgerbox;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ChoppHourApplicationTests {
+class BurgerBoxApplicationTests {
 
 	@Test
 	void contextLoads() {

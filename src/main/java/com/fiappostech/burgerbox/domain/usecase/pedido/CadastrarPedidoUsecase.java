@@ -1,4 +1,4 @@
-package com.fiappostech.chopphour.domain.usecase.pedido.cadastrar;
+package com.fiappostech.burgerbox.domain.usecase.pedido;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
