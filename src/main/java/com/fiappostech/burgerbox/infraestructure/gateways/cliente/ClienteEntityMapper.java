@@ -1,17 +1,19 @@
 package com.fiappostech.burgerbox.infraestructure.gateways.cliente;
 
-import com.fiappostech.burgerbox.core.entity.Cliente;
-import com.fiappostech.burgerbox.infraestructure.persistence.Cliente.ClienteEntity;
+import com.fiappostech.burgerbox.core.entity.ClienteDomain;
+import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class ClienteEntityMapper {
 
-    public ClienteEntity converterParaEntity(Cliente cliente) {
+    public ClienteEntity toEntity(ClienteDomain cliente) {
         return new ClienteEntity(cliente.id(), cliente.nome(), cliente.cpf(), cliente.dataCriacao(), cliente.dataAtualizacao());
     }
 
-    public Cliente converterParaCliente(ClienteEntity entity) {
-        return new Cliente(entity.getId(), entity.getNome(), entity.getCpf(), entity.getDataCriacao(), entity.getDataAtualizacao());
+    public ClienteDomain toDomain(ClienteEntity entity) {
+        return new ClienteDomain(entity.getId(), entity.getNome(), entity.getCpf(), entity.getDataCriacao(), entity.getDataAtualizacao());
     }
 }

@@ -1,8 +1,9 @@
 package com.fiappostech.burgerbox.infraestructure.controller.cliente;
 
-import com.fiappostech.burgerbox.core.entity.Cliente;
-import com.fiappostech.burgerbox.core.usecase.cliente.cadastrar.CriarClienteUseCase;
-import com.fiappostech.burgerbox.infraestructure.dtos.clientedto.ClienteDto;
+import com.fiappostech.burgerbox.core.entity.ClienteDomain;
+import com.fiappostech.burgerbox.core.usecase.cliente.CadastrarClienteUseCase;
+import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarInput;
+import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarOutput;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class ClienteController {
 
-    private final CriarClienteUseCase createClienteUseCase;
-    private final ClienteDtoMapper clienteDtoMapper;
+    private final CadastrarClienteUseCase createClienteUseCase;
+    private final ClienteMapper clienteDtoMapper;
 
     @PostMapping
-    public ClienteDto criarCliente(@RequestBody ClienteDto clienteDto) {
-       Cliente novoCliente = createClienteUseCase.execute(clienteDtoMapper.converterParaDomain(clienteDto));
-       return clienteDtoMapper.converterParaDto(novoCliente);
+    public ClienteCadastrarOutput cadastrar(@RequestBody ClienteCadastrarInput clienteInput) {
+        ClienteDomain clienteDomain = clienteDtoMapper.toDomain(clienteInput);
+        ClienteDomain novoClienteDomain = createClienteUseCase.execute(clienteDomain);
+        ClienteCadastrarOutput clienteOutput = clienteDtoMapper.toOutput(novoClienteDomain);
+        return clienteOutput;
     }
-
 }

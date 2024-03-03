@@ -1,5 +1,6 @@
-package com.fiappostech.burgerbox.core.entity;
+package com.fiappostech.burgerbox.infraestructure.persistence.pedido;
 
+import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,19 +12,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "produto", schema = "public")
-public class Produto {
+@Table(name = "pedido", schema = "public")
+public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "nome")
-    private String nome;
-
-    @Column(name = "valor")
-    private double valor;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private ClienteEntity cliente;
 
     @Column(name = "data_criacao")
     private String dataCriacao;
@@ -31,4 +30,3 @@ public class Produto {
     @Column(name = "data_atualizacao")
     private String dataAtualizacao;
 }
-

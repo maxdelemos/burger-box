@@ -1,4 +1,4 @@
-package com.fiappostech.burgerbox.infraestructure.persistence.Cliente;
+package com.fiappostech.burgerbox.infraestructure.persistence.cliente;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

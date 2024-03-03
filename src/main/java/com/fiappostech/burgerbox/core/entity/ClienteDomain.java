@@ -1,8 +1,9 @@
-package com.fiappostech.burgerbox.infraestructure.dtos.clientedto;
+package com.fiappostech.burgerbox.core.entity;
 
 import java.time.LocalDateTime;
 
-public record ClienteDto(
+public record ClienteDomain(
+        Long id,
         String nome,
         String cpf,
         LocalDateTime dataCriacao,

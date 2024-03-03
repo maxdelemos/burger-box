@@ -1,6 +1,7 @@
-package com.fiappostech.burgerbox.core.entity;
+package com.fiappostech.burgerbox.infraestructure.persistence.pedidoItem;
 
-import com.fiappostech.burgerbox.infraestructure.persistence.Cliente.ClienteEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.produto.Produto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
