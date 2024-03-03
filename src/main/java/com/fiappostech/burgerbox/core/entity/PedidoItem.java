@@ -1,5 +1,6 @@
-package com.fiappostech.burgerbox.domain.entity;
+package com.fiappostech.burgerbox.core.entity;
 
+import com.fiappostech.burgerbox.infraestructure.persistence.Cliente.ClienteEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class PedidoItem {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private ClienteEntity cliente;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")

@@ -1,12 +1,17 @@
-package com.fiappostech.burgerbox.domain.entity;
+package com.fiappostech.burgerbox.core.entity;
 
+import com.fiappostech.burgerbox.infraestructure.persistence.Cliente.ClienteEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "pedido", schema = "public")
 public class Pedido {
 
@@ -17,7 +22,7 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private ClienteEntity cliente;
 
     @Column(name = "data_criacao")
     private String dataCriacao;

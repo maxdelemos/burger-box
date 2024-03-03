@@ -17,6 +17,7 @@ CREATE TABLE pedido_item (
 CREATE TABLE cliente (
   id SERIAL PRIMARY KEY,
   nome varchar,
+  cpf varchar,
   data_criacao timestamp,
   data_atualizacao timestamp
 );

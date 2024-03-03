@@ -1,12 +1,16 @@
-package com.fiappostech.burgerbox.domain.entity;
+package com.fiappostech.burgerbox.core.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "produto", schema = "public")
 public class Produto {
 
