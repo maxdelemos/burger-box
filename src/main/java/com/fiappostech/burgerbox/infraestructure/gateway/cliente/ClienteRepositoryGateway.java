@@ -1,4 +1,4 @@
-package com.fiappostech.burgerbox.infraestructure.gateways.cliente;
+package com.fiappostech.burgerbox.infraestructure.gateway.cliente;
 
 import com.fiappostech.burgerbox.core.entity.ClienteDomain;
 import com.fiappostech.burgerbox.core.gateway.cliente.ClienteGateway;
@@ -12,12 +12,23 @@ import org.springframework.stereotype.Component;
 public class ClienteRepositoryGateway implements ClienteGateway {
 
     private final ClienteRepository clienteRepository;
-    private final ClienteEntityMapper clienteEntityMapper;
 
     @Override
     public ClienteDomain cadastrarCliente(ClienteDomain clienteDomain) {
-        ClienteEntity clienteEntity = clienteEntityMapper.toEntity(clienteDomain);
+        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toEntity(clienteDomain);
         ClienteEntity novaPessoa = clienteRepository.save(clienteEntity);
-        return clienteEntityMapper.toDomain(novaPessoa);
+        return ClienteEntityMapper.INSTANCE.toDomain(novaPessoa);
+    }
+
+    @Override
+    public ClienteDomain buscar(String cpf) {
+        ClienteEntity clienteEntity = clienteRepository.findAllByCpf(cpf);
+        return ClienteEntityMapper.INSTANCE.toDomain(clienteEntity);
+    }
+
+    @Override
+    public ClienteDomain salvar(ClienteDomain clienteDomain) {
+        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toEntity(clienteDomain);
+        return ClienteEntityMapper.INSTANCE.toDomain(clienteRepository.saveAndFlush(clienteEntity));
     }
 }

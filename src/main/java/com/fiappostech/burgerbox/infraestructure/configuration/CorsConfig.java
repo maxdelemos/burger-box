@@ -1,4 +1,4 @@
-package com.fiappostech.burgerbox.config;
+package com.fiappostech.burgerbox.infraestructure.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
