@@ -9,6 +9,7 @@ import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarInp
 import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarOutput;
 import com.fiappostech.burgerbox.infraestructure.dto.cliente.IdentificarClienteInput;
 import com.fiappostech.burgerbox.infraestructure.dto.cliente.IdentificarClienteOutput;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class ClienteController {
     private final IdentificarClienteUseCase identificarClienteUseCase;
 
     @PostMapping("/cadastrar")
-    public ClienteCadastrarOutput cadastrar(@RequestBody ClienteCadastrarInput clienteInput) {
+    public ClienteCadastrarOutput cadastrar(@RequestBody @Valid ClienteCadastrarInput clienteInput) {
         ClienteDomain clienteDomain = CadastrarClienteMapper.INSTANCE.toDomain(clienteInput);
         ClienteDomain novoClienteDomain = createClienteUseCase.execute(clienteDomain);
         ClienteCadastrarOutput clienteOutput = CadastrarClienteMapper.INSTANCE.toOutput(novoClienteDomain);
