@@ -1,4 +1,4 @@
-package com.fiappostech.burgerbox.core.gateway.cliente;
+package com.fiappostech.burgerbox.core.gateway;
 
 import com.fiappostech.burgerbox.core.entity.ClienteDomain;
 

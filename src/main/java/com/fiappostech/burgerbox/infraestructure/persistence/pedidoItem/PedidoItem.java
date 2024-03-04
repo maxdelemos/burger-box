@@ -1,7 +1,7 @@
 package com.fiappostech.burgerbox.infraestructure.persistence.pedidoItem;
 
 import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.produto.Produto;
+import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class PedidoItem {
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    private Produto produto;
+    private ProdutoEntity produto;
 
     @Column(name = "quantidade")
     private int quantidade;
