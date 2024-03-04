@@ -23,6 +23,9 @@ public class ClienteRepositoryGateway implements ClienteGateway {
     @Override
     public ClienteDomain buscar(String cpf) {
         ClienteEntity clienteEntity = clienteRepository.findAllByCpf(cpf);
+        if (clienteEntity == null) {
+            return null;
+        }
         return ClienteEntityMapper.INSTANCE.toDomain(clienteEntity);
     }
 
