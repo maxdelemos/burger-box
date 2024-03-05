@@ -4,5 +4,5 @@ import com.fiappostech.burgerbox.core.entity.ClienteDomain;
 
 public interface CadastrarClienteUseCase {
 
-    public ClienteDomain execute(ClienteDomain cliente);
+    ClienteDomain execute(ClienteDomain cliente);
 }

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -35,9 +36,9 @@ public class ProdutoEntity {
     private double preco;
 
     @Column(name = "data_criacao")
-    private String dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
-    private String dataAtualizacao;
+    private LocalDateTime dataAtualizacao;
 }
 
