@@ -21,7 +21,7 @@ public class ProdutoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "nome")
     private String nome;
@@ -33,7 +33,16 @@ public class ProdutoEntity {
     private List<CategoriaEntity> categorias;
 
     @Column(name = "preco")
-    private double preco;
+    private Double preco;
+
+    @Column(name = "descricao")
+    private String descricao;
+
+    @Column(name = "imagem")
+    private String imagem;
+
+    @Column(name = "ativo")
+    private Boolean ativo;
 
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;

@@ -83,3 +83,5 @@ INSERT INTO produto_categoria (produto_id, categoria_id) VALUES(6, 3);
 INSERT INTO produto_categoria (produto_id, categoria_id) VALUES(7, 4);
 INSERT INTO produto_categoria (produto_id, categoria_id) VALUES(8, 4);
 
+SELECT setval('produto_id_seq', (SELECT MAX(id) FROM produto));
+

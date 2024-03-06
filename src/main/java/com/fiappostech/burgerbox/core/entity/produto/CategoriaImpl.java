@@ -1,20 +1,18 @@
-package com.fiappostech.burgerbox.core.entity.produto.factory;
+package com.fiappostech.burgerbox.core.entity.produto;
 
-import com.fiappostech.burgerbox.core.entity.produto.Categoria;
-
-public class CategoriaCommon implements Categoria {
-    long id;
+public class CategoriaImpl implements Categoria {
+    Long id;
     String descricao;
     String codigo;
 
-    public CategoriaCommon(long id, String descricao, String codigo) {
+    public CategoriaImpl(Long id, String descricao, String codigo) {
         this.id = id;
         this.descricao = descricao;
         this.codigo = codigo;
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 

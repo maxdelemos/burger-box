@@ -1,10 +1,15 @@
 package com.fiappostech.burgerbox.core.gateway;
 
-import com.fiappostech.burgerbox.core.entity.produto.factory.Produto;
+import com.fiappostech.burgerbox.core.entity.produto.Produto;
 
 public interface ProdutoGateway {
-    Produto cadastrar(Produto produtoCommon);
+    Produto cadastrar(Produto produto);
+
     Produto editar(Produto produto);
-    Produto remover(Produto produto);
-    Boolean existe(String nome);
+
+    void remover(Long id);
+
+    Boolean existePorNomeAtivo(String nome);
+
+    Produto buscarPorIdAtivo(Long id);
 }

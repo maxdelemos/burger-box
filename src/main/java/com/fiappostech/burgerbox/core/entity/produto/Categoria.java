@@ -1,7 +1,7 @@
 package com.fiappostech.burgerbox.core.entity.produto;
 
 public interface Categoria {
-    long getId();
+    Long getId();
     String getDescricao();
     String getCodigo();
 }

@@ -2,8 +2,7 @@ package com.fiappostech.burgerbox.infraestructure.controller.produto.request;
 
 import java.util.List;
 
-public class ProdutoRequestModel {
-    private Long id;
+public class ProdutoCadastrarRequestModel {
     private String nome;
     private String descricao;
     private String imagem;
@@ -32,14 +31,6 @@ public class ProdutoRequestModel {
 
     public void setCategorias(List<CategoriaRequestModel> categorias) {
         this.categorias = categorias;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDescricao() {
