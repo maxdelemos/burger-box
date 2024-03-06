@@ -2,12 +2,19 @@ package com.fiappostech.burgerbox.infraestructure.configuration;
 
 // Possibilita que o Spring consiga gerenciar os usecases.
 
-import com.fiappostech.burgerbox.core.entity.produto.*;
+import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactory;
+import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactoryImpl;
+import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
+import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactoryImpl;
+import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactory;
+import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactoryImpl;
 import com.fiappostech.burgerbox.core.gateway.CategoriaGateway;
 import com.fiappostech.burgerbox.core.gateway.ClienteGateway;
+import com.fiappostech.burgerbox.core.gateway.PedidoGateway;
 import com.fiappostech.burgerbox.core.gateway.ProdutoGateway;
 import com.fiappostech.burgerbox.core.usecase.cliente.CadastrarClienteUseCaseImpl;
 import com.fiappostech.burgerbox.core.usecase.cliente.IdentificarClienteUseCaseImpl;
+import com.fiappostech.burgerbox.core.usecase.pedido.CadastrarPedidoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.CadastrarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.EditarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.RemoverProdutoInteractor;
@@ -35,13 +42,18 @@ public class BeansConfig {
     }
 
     @Bean
-    public CategoriaFactory categoriaCommonFactory() {
+    public CategoriaFactory categoriaFactory() {
         return new CategoriaFactoryImpl();
     }
 
     @Bean
     public ProdutoPresenter produtoPresenter() {
         return new ProdutoResponseFormatter();
+    }
+
+    @Bean
+    public ClienteFactory clienteFactory() {
+        return new ClienteFactoryImpl();
     }
 
     @Bean
@@ -81,6 +93,19 @@ public class BeansConfig {
         return new RemoverProdutoInteractor(
                 produtoGateway,
                 produtoPresenter
+        );
+    }
+
+    @Bean
+    public CadastrarPedidoInteractor cadastrarPedidoInteractor(
+            PedidoGateway pedidoGateway,
+            ClienteGateway clienteGateway,
+            ProdutoGateway produtoGateway
+    ) {
+        return new CadastrarPedidoInteractor(
+                pedidoGateway,
+                clienteGateway,
+                produtoGateway
         );
     }
 }

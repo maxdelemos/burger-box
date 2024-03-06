@@ -1,4 +1,4 @@
-package com.fiappostech.burgerbox.infraestructure.gateway.categoria;
+package com.fiappostech.burgerbox.infraestructure.gateway;
 
 import com.fiappostech.burgerbox.core.entity.produto.Categoria;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;

@@ -14,7 +14,7 @@ public class IdentificarClienteUseCaseImpl implements IdentificarClienteUseCase{
 
     @Override
     public ClienteDomain execute(ClienteDomain clienteDomain) {
-        ClienteDomain cliente = clienteGateway.buscar(clienteDomain.cpf());
+        ClienteDomain cliente = clienteGateway.buscarPorCpf(clienteDomain.cpf());
         if (!Objects.isNull(cliente)) {
             return cliente;
         }

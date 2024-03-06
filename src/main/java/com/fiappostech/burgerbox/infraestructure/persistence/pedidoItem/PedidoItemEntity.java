@@ -1,6 +1,7 @@
 package com.fiappostech.burgerbox.infraestructure.persistence.pedidoItem;
 
 import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.pedido.PedidoEntity;
 import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.Data;
 @Builder
 @Entity
 @Table(name = "pedido_item", schema = "public")
-public class PedidoItem {
+public class PedidoItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +19,8 @@ public class PedidoItem {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private ClienteEntity cliente;
+    @JoinColumn(name = "pedido_id")
+    private PedidoEntity pedidoEntity;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")

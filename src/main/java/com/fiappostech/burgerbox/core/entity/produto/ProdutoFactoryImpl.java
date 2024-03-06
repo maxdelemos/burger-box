@@ -62,4 +62,9 @@ public class ProdutoFactoryImpl implements ProdutoFactory {
                 categorias
         );
     }
+
+    @Override
+    public Produto create(Long id) {
+        return new ProdutoImpl(id);
+    }
 }

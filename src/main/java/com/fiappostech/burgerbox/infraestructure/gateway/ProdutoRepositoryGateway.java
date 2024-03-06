@@ -1,6 +1,9 @@
-package com.fiappostech.burgerbox.infraestructure.gateway.produto;
+package com.fiappostech.burgerbox.infraestructure.gateway;
 
-import com.fiappostech.burgerbox.core.entity.produto.*;
+import com.fiappostech.burgerbox.core.entity.produto.Categoria;
+import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
+import com.fiappostech.burgerbox.core.entity.produto.Produto;
+import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactory;
 import com.fiappostech.burgerbox.core.gateway.ProdutoGateway;
 import com.fiappostech.burgerbox.infraestructure.persistence.categoria.CategoriaEntity;
 import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoEntity;
@@ -8,7 +11,6 @@ import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoRepo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -149,9 +151,17 @@ public class ProdutoRepositoryGateway implements ProdutoGateway {
                     produtoEntity.get().getAtivo(),
                     produtoEntity.get().getDataCriacao(),
                     produtoEntity.get().getDataCriacao()
-                    );
+            );
         }
 
         return null;
+    }
+
+    @Override
+    public List<Produto> buscarPorIdsAtivo(List<Long> ids) {
+        List<ProdutoEntity> produtoEntity = produtoRepository.buscarPorIds(ids);
+        return produtoEntity.stream().map(entity -> produtoFactory.create(
+                entity.getId()
+        )).toList();
     }
 }

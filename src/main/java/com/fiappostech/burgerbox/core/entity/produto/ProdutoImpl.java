@@ -73,6 +73,10 @@ public class ProdutoImpl implements Produto {
         this.ativo = ativo;
     }
 
+    public ProdutoImpl(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return this.id;

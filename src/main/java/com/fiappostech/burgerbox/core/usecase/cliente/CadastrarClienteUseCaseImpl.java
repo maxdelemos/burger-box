@@ -13,10 +13,10 @@ public class CadastrarClienteUseCaseImpl implements CadastrarClienteUseCase {
 
     @Override
     public ClienteDomain execute(ClienteDomain cliente) {
-       ClienteDomain clienteExistente =  clienteGateway.buscar(cliente.cpf());
+       ClienteDomain clienteExistente =  clienteGateway.buscarPorCpf(cliente.cpf());
        if(clienteExistente != null) {
            throw new BusinessException("Já existe um cliente cadastrado com o CPF: " + cliente.cpf());
        }
-        return clienteGateway.cadastrarCliente(cliente);
+        return clienteGateway.cadastrar(cliente);
     }
 }

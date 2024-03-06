@@ -33,4 +33,8 @@ public interface ProdutoFactory {
             String imagem,
             List<Categoria> categorias
     );
+
+    Produto create(
+            Long id
+    );
 }
