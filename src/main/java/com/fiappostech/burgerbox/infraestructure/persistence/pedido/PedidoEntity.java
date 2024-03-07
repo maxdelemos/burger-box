@@ -1,6 +1,5 @@
 package com.fiappostech.burgerbox.infraestructure.persistence.pedido;
 
-import com.fiappostech.burgerbox.infraestructure.persistence.categoria.CategoriaEntity;
 import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
 import com.fiappostech.burgerbox.infraestructure.persistence.pedidoItem.PedidoItemEntity;
 import jakarta.persistence.*;
@@ -9,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -22,21 +22,18 @@ public class PedidoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 
-    @ManyToMany
-    @JoinTable(schema = "public", name = "pedido_item",
-            joinColumns = @JoinColumn(name = "pedido_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id"))
-    private List<PedidoItemEntity> itens;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoItemEntity> pedidoItem;
 
     @Column(name = "data_criacao")
-    private String dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
-    private String dataAtualizacao;
+    private LocalDateTime dataAtualizacao;
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PedidoRequestModel {
     private Long clienteId;
-    private List<ProdutoRequestModel> produtoRequestMode;
+    private List<PedidoProdutoRequestModel> produto;
 
     public Long getClienteId() {
         return clienteId;
@@ -14,11 +14,11 @@ public class PedidoRequestModel {
         this.clienteId = clienteId;
     }
 
-    public List<ProdutoRequestModel> getProdutoRequestMode() {
-        return produtoRequestMode;
+    public List<PedidoProdutoRequestModel> getProduto() {
+        return produto;
     }
 
-    public void setProdutoRequestMode(List<ProdutoRequestModel> produtoRequestMode) {
-        this.produtoRequestMode = produtoRequestMode;
+    public void setProduto(List<PedidoProdutoRequestModel> produto) {
+        this.produto = produto;
     }
 }

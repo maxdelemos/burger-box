@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProdutoRepositoryGateway implements ProdutoGateway {
+public class ProdutoGatewayImpl implements ProdutoGateway {
     private final ProdutoRepository produtoRepository;
     private final CategoriaFactory categoriaFactory;
     private final ProdutoFactory produtoFactory;

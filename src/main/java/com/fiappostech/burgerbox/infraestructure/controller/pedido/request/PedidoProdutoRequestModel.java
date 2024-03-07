@@ -1,6 +1,6 @@
 package com.fiappostech.burgerbox.infraestructure.controller.pedido.request;
 
-public class ProdutoRequestModel {
+public class PedidoProdutoRequestModel {
     private Long id;
     private Integer quantidade;
 

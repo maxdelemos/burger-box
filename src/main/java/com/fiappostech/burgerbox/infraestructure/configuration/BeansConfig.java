@@ -4,6 +4,10 @@ package com.fiappostech.burgerbox.infraestructure.configuration;
 
 import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactory;
 import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactoryImpl;
+import com.fiappostech.burgerbox.core.entity.pedido.PedidoFactory;
+import com.fiappostech.burgerbox.core.entity.pedido.PedidoFactoryImpl;
+import com.fiappostech.burgerbox.core.entity.pedido.PedidoItemFactory;
+import com.fiappostech.burgerbox.core.entity.pedido.PedidoItemFactoryImpl;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactoryImpl;
 import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactory;
@@ -18,6 +22,8 @@ import com.fiappostech.burgerbox.core.usecase.pedido.CadastrarPedidoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.CadastrarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.EditarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.RemoverProdutoInteractor;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoPresenter;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoResponseFormatter;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.response.ProdutoPresenter;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.response.ProdutoResponseFormatter;
 import org.springframework.context.annotation.Bean;
@@ -52,8 +58,23 @@ public class BeansConfig {
     }
 
     @Bean
+    public PedidoPresenter pedidoPresenter() {
+        return new PedidoResponseFormatter();
+    }
+
+    @Bean
     public ClienteFactory clienteFactory() {
         return new ClienteFactoryImpl();
+    }
+
+    @Bean
+    public PedidoFactory pedidoFactory() {
+        return new PedidoFactoryImpl();
+    }
+
+    @Bean
+    public PedidoItemFactory pedidoItemFactory() {
+        return new PedidoItemFactoryImpl();
     }
 
     @Bean
@@ -100,12 +121,17 @@ public class BeansConfig {
     public CadastrarPedidoInteractor cadastrarPedidoInteractor(
             PedidoGateway pedidoGateway,
             ClienteGateway clienteGateway,
-            ProdutoGateway produtoGateway
+            ProdutoGateway produtoGateway,
+            PedidoPresenter pedidoPresenter,
+            PedidoFactory pedidoFactory,
+            PedidoItemFactory pedidoItemFactory
     ) {
         return new CadastrarPedidoInteractor(
                 pedidoGateway,
                 clienteGateway,
-                produtoGateway
-        );
+                produtoGateway,
+                pedidoPresenter,
+                pedidoFactory,
+                pedidoItemFactory);
     }
 }
