@@ -5,4 +5,9 @@ public class PedidoItemFactoryImpl implements PedidoItemFactory {
     public PedidoItem create(Long id, Integer quantidade) {
         return new PedidoItemImpl(id, quantidade);
     }
+
+    @Override
+    public PedidoItem create(Long id, Integer quantidade, Double preco) {
+        return new PedidoItemImpl(id, quantidade, preco);
+    }
 }

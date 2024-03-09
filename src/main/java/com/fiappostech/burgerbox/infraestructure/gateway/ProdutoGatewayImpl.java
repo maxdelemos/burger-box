@@ -161,7 +161,8 @@ public class ProdutoGatewayImpl implements ProdutoGateway {
     public List<Produto> buscarPorIdsAtivo(List<Long> ids) {
         List<ProdutoEntity> produtoEntity = produtoRepository.buscarPorIds(ids);
         return produtoEntity.stream().map(entity -> produtoFactory.create(
-                entity.getId()
+                entity.getId(),
+                entity.getPreco()
         )).toList();
     }
 }

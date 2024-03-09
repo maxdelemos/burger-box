@@ -35,6 +35,7 @@ public interface ProdutoFactory {
     );
 
     Produto create(
-            Long id
+            Long id,
+            Double preco
     );
 }

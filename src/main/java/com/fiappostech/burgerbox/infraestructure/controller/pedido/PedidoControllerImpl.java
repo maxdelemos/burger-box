@@ -1,7 +1,10 @@
 package com.fiappostech.burgerbox.infraestructure.controller.pedido;
 
-import com.fiappostech.burgerbox.core.usecase.pedido.CadastrarPedidoInteractor;
+import com.fiappostech.burgerbox.core.entity.pedido.MPPagamentoWebhook;
+import com.fiappostech.burgerbox.core.usecase.pedido.*;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.AtualizarStatusPedidoRequestModel;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.PedidoRequestModel;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.ListaPedidoResponseModel;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoResponseModel;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +16,19 @@ import java.util.List;
 @RequestMapping("/api/pedidos")
 @AllArgsConstructor
 public class PedidoControllerImpl implements PedidoController {
-    private final CadastrarPedidoInteractor cadastrarPedidoInteractor;
+    private final CadastrarPedidoBoundary cadastrarPedidoBoundary;
+    private final AtualizarPedidoBoundary atualizarPedidoBoundary;
+    private final ListarPedidoBoundary listarPedidoBoundary;
+    private final WebhookPagamentoBoundary webhookPagamentoBoundary;
 
     @PostMapping
     public ResponseEntity<PedidoResponseModel> cadastrar(@RequestBody PedidoRequestModel pedidoRequestModel) {
-        return ResponseEntity.ok(cadastrarPedidoInteractor.execute(pedidoRequestModel));
+        return ResponseEntity.ok(cadastrarPedidoBoundary.execute(pedidoRequestModel));
     }
 
     @GetMapping
-    public ResponseEntity<List<Object>> listar(@RequestBody Object o) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<ListaPedidoResponseModel>> listar() {
+        return ResponseEntity.ok(listarPedidoBoundary.execute());
     }
 
     @GetMapping("/{id}/status-pagamento")
@@ -31,12 +37,12 @@ public class PedidoControllerImpl implements PedidoController {
     }
 
     @PostMapping("/webhooks/pagamento")
-    public ResponseEntity<Object> webhooksPagamento(@RequestBody Object o) {
-        return ResponseEntity.ok(null);
+    public void webhooksPagamento(@RequestBody MPPagamentoWebhook mpPagamentoWebhook) {
+        webhookPagamentoBoundary.execute(mpPagamentoWebhook);
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<Object> status(@PathVariable Object o) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Object> status(@PathVariable Long id, @RequestBody AtualizarStatusPedidoRequestModel atualizarStatusPedidoRequestModel) {
+        return ResponseEntity.ok(atualizarPedidoBoundary.execute(id, atualizarStatusPedidoRequestModel));
     }
 }

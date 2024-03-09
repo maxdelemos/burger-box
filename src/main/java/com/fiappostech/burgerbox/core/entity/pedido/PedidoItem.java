@@ -4,4 +4,6 @@ public interface PedidoItem {
     Long getId();
 
     Integer getQuantidade();
+
+    Double getPreco();
 }

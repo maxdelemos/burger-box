@@ -7,6 +7,7 @@ import com.fiappostech.burgerbox.core.entity.pedido.PedidoItem;
 import com.fiappostech.burgerbox.core.entity.pedido.PedidoItemFactory;
 import com.fiappostech.burgerbox.core.entity.produto.Produto;
 import com.fiappostech.burgerbox.core.gateway.ClienteGateway;
+import com.fiappostech.burgerbox.core.gateway.MercadoPagoGateway;
 import com.fiappostech.burgerbox.core.gateway.PedidoGateway;
 import com.fiappostech.burgerbox.core.gateway.ProdutoGateway;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.PedidoProdutoRequestModel;
@@ -25,6 +26,7 @@ public class CadastrarPedidoInteractor implements CadastrarPedidoBoundary {
     private final PedidoPresenter pedidoPresenter;
     private final PedidoFactory pedidoFactory;
     private final PedidoItemFactory pedidoItemFactory;
+    private final MercadoPagoGateway mercadoPagoGateway;
 
     public CadastrarPedidoInteractor(
             PedidoGateway pedidoGateway,
@@ -32,13 +34,14 @@ public class CadastrarPedidoInteractor implements CadastrarPedidoBoundary {
             ProdutoGateway produtoGateway,
             PedidoPresenter pedidoPresenter,
             PedidoFactory pedidoFactory,
-            PedidoItemFactory pedidoItemFactory) {
+            PedidoItemFactory pedidoItemFactory, MercadoPagoGateway mercadoPagoGateway) {
         this.pedidoGateway = pedidoGateway;
         this.clienteGateway = clienteGateway;
         this.produtoGateway = produtoGateway;
         this.pedidoPresenter = pedidoPresenter;
         this.pedidoFactory = pedidoFactory;
         this.pedidoItemFactory = pedidoItemFactory;
+        this.mercadoPagoGateway = mercadoPagoGateway;
     }
 
     @Override
@@ -52,32 +55,32 @@ public class CadastrarPedidoInteractor implements CadastrarPedidoBoundary {
             return pedidoPresenter.prepareFailView("O cliente não foi encontrado.");
         }
 
-        // valida se todas os produtos existem
-        List<Produto> produtosEncontrados = produtoGateway.buscarPorIdsAtivo(pedidoRequestModel
-                .getProduto()
-                .stream()
-                .map(PedidoProdutoRequestModel::getId)
-                .toList()
-        );
-
-        if (pedidoRequestModel.getProduto().size() != produtosEncontrados.size()) {
-            List<Long> idsProdutosEncontrados = produtosEncontrados
-                    .stream()
-                    .map(Produto::getId)
-                    .toList();
-            List<PedidoProdutoRequestModel> produtosNaoEncontradas = pedidoRequestModel.getProduto()
-                    .stream()
-                    .filter(produto -> !idsProdutosEncontrados.contains(produto.getId()))
-                    .toList();
-            String idsFormatado = produtosNaoEncontradas.stream()
-                    .map(PedidoProdutoRequestModel::getId).
-                    map(Object::toString)
-                    .collect(Collectors.joining(","));
-
-            return pedidoPresenter.prepareFailView(
-                    String.format("Produtos(s) não encontrado(s): %s", idsFormatado)
-            );
-        }
+//        // valida se todas os produtos existem
+//        List<Produto> produtosEncontrados = produtoGateway.buscarPorIdsAtivo(pedidoRequestModel
+//                .getProduto()
+//                .stream()
+//                .map(PedidoProdutoRequestModel::getId)
+//                .toList()
+//        );
+//
+//        if (pedidoRequestModel.getProduto().size() != produtosEncontrados.size()) {
+//            List<Long> idsProdutosEncontrados = produtosEncontrados
+//                    .stream()
+//                    .map(Produto::getId)
+//                    .toList();
+//            List<PedidoProdutoRequestModel> produtosNaoEncontradas = pedidoRequestModel.getProduto()
+//                    .stream()
+//                    .filter(produto -> !idsProdutosEncontrados.contains(produto.getId()))
+//                    .toList();
+//            String idsFormatado = produtosNaoEncontradas.stream()
+//                    .map(PedidoProdutoRequestModel::getId).
+//                    map(Object::toString)
+//                    .collect(Collectors.joining(","));
+//
+//            return pedidoPresenter.prepareFailView(
+//                    String.format("Produtos(s) não encontrado(s): %s", idsFormatado)
+//            );
+//        }
 
         List<PedidoItem> pedidoItems = pedidoRequestModel.getProduto()
                 .stream()
@@ -90,7 +93,15 @@ public class CadastrarPedidoInteractor implements CadastrarPedidoBoundary {
         );
 
         Pedido pedidoCadastrado = pedidoGateway.cadastrar(novoPedido);
+        pedidoGateway.buscarPorIdTeste(pedidoCadastrado.getId());
 
-        return new PedidoResponseModel(pedidoCadastrado.getId());
+        Double valorPedido = pedidoCadastrado.getPedidoItem()
+                .stream()
+                .map(pedidoItem -> pedidoItem.getQuantidade() * pedidoItem.getPreco())
+                .reduce(0.0, Double::sum);
+
+        mercadoPagoGateway.gerarPagamento(valorPedido);
+
+        return pedidoPresenter.prepareSuccessView(new PedidoResponseModel(pedidoCadastrado.getId()));
     }
 }

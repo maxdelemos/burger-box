@@ -15,3 +15,5 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: none
+mp:
+  accessToken: APP_USR-7208984657366749-030815-1f01b22a4239823292fb85e60d2dd95e-239027380

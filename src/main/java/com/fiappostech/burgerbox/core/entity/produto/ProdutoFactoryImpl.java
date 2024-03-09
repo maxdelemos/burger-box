@@ -64,7 +64,7 @@ public class ProdutoFactoryImpl implements ProdutoFactory {
     }
 
     @Override
-    public Produto create(Long id) {
-        return new ProdutoImpl(id);
+    public Produto create(Long id, Double preco) {
+        return new ProdutoImpl(id, preco);
     }
 }

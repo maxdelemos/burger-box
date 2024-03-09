@@ -1,0 +1,9 @@
+
+
+version: '3.9'
+services:
+  gnrok-agent:
+    image: ngrok/ngrok:3.4.0-alpine
+    ports:
+      - "9000:9000"
+    command: sh -c "ngrok http --domain=mouse-arriving-lively.ngrok-free.app 9000"

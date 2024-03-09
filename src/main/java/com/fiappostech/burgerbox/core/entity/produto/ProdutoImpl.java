@@ -73,6 +73,11 @@ public class ProdutoImpl implements Produto {
         this.ativo = ativo;
     }
 
+    public ProdutoImpl(Long id, Double preco) {
+        this.id = id;
+        this.preco = preco;
+    }
+
     public ProdutoImpl(Long id) {
         this.id = id;
     }

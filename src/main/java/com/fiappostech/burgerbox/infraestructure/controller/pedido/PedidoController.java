@@ -1,6 +1,9 @@
 package com.fiappostech.burgerbox.infraestructure.controller.pedido;
 
+import com.fiappostech.burgerbox.core.entity.pedido.MPPagamentoWebhook;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.AtualizarStatusPedidoRequestModel;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.PedidoRequestModel;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.ListaPedidoResponseModel;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoResponseModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,17 +13,17 @@ import java.util.List;
 @RequestMapping("/api/pedidos")
 public interface PedidoController {
     @PostMapping
-    public ResponseEntity<PedidoResponseModel> cadastrar(@RequestBody PedidoRequestModel pedidoRequestModel);
+    ResponseEntity<PedidoResponseModel> cadastrar(@RequestBody PedidoRequestModel pedidoRequestModel);
 
     @GetMapping
-    public ResponseEntity<List<Object>> listar(@RequestBody Object o);
+    ResponseEntity<List<ListaPedidoResponseModel>> listar();
 
     @GetMapping("/{id}/status-pagamento")
-    public ResponseEntity<Object> statusPagamento(@PathVariable Object o);
+    ResponseEntity<Object> statusPagamento(@PathVariable Object o);
 
     @PostMapping("/webhooks/pagamento")
-    public ResponseEntity<Object> webhooksPagamento(@RequestBody Object o);
+    void webhooksPagamento(@RequestBody MPPagamentoWebhook mpPagamentoWebhook);
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<Object> status(@PathVariable Object o);
+    ResponseEntity<Object> status(@PathVariable Long id, @RequestBody AtualizarStatusPedidoRequestModel atualizarStatusPedidoRequestModel);
 }

@@ -1,6 +1,7 @@
 CREATE TABLE pedido (
   id SERIAL PRIMARY KEY,
   cliente_id integer,
+  status varchar,
   data_criacao timestamp DEFAULT CURRENT_TIMESTAMP,
   data_atualizacao timestamp DEFAULT CURRENT_TIMESTAMP
 );
