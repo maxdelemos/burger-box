@@ -3,8 +3,8 @@ package com.fiappostech.burgerbox.infraestructure.gateway;
 import com.fiappostech.burgerbox.core.entity.produto.Categoria;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
 import com.fiappostech.burgerbox.core.gateway.CategoriaGateway;
-import com.fiappostech.burgerbox.infraestructure.persistence.categoria.CategoriaEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.categoria.CategoriaRepository;
+import com.fiappostech.burgerbox.infraestructure.persistence.CategoriaEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

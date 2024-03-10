@@ -1,7 +1,7 @@
 package com.fiappostech.burgerbox.core.entity.pedido;
 
 public interface PedidoItem {
-    Long getId();
+    Long geProdutoId();
 
     Integer getQuantidade();
 

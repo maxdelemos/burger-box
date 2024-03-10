@@ -4,25 +4,25 @@ package com.fiappostech.burgerbox.infraestructure.configuration;
 
 import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactory;
 import com.fiappostech.burgerbox.core.entity.cliente.ClienteFactoryImpl;
+import com.fiappostech.burgerbox.core.entity.pagamento.PagamentoFactory;
+import com.fiappostech.burgerbox.core.entity.pagamento.PagamentoFactoryImpl;
 import com.fiappostech.burgerbox.core.entity.pedido.*;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
 import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactoryImpl;
 import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactory;
 import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactoryImpl;
 import com.fiappostech.burgerbox.core.gateway.*;
-import com.fiappostech.burgerbox.core.usecase.cliente.CadastrarClienteUseCaseImpl;
-import com.fiappostech.burgerbox.core.usecase.cliente.IdentificarClienteUseCaseImpl;
-import com.fiappostech.burgerbox.core.usecase.pedido.AtualizarPedidoInteractor;
-import com.fiappostech.burgerbox.core.usecase.pedido.CadastrarPedidoInteractor;
-import com.fiappostech.burgerbox.core.usecase.pedido.ListarPedidoInteractor;
-import com.fiappostech.burgerbox.core.usecase.pedido.WebhookPagamentoInteractor;
+import com.fiappostech.burgerbox.core.usecase.cliente.CadastrarClienteInteractor;
+import com.fiappostech.burgerbox.core.usecase.cliente.IdentificarClienteInteractor;
+import com.fiappostech.burgerbox.core.usecase.pedido.*;
 import com.fiappostech.burgerbox.core.usecase.produto.CadastrarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.EditarProdutoInteractor;
 import com.fiappostech.burgerbox.core.usecase.produto.RemoverProdutoInteractor;
-import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.AtualizarPedidoPresenter;
-import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.AtualizarPedidoResponseFormatter;
-import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoPresenter;
-import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.PedidoResponseFormatter;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.ClientePresenter;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.ClientePresenterFormatter;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.IdentificarClientePresenter;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.IdentificarClientePresenterFormatter;
+import com.fiappostech.burgerbox.infraestructure.controller.pedido.response.*;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.response.ProdutoPresenter;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.response.ProdutoResponseFormatter;
 import com.mercadopago.MercadoPagoConfig;
@@ -43,13 +43,39 @@ public class BeansConfig {
     }
 
     @Bean
-    public CadastrarClienteUseCaseImpl criarPessoaUseCase(ClienteGateway clienteGateway) {
-        return new CadastrarClienteUseCaseImpl(clienteGateway);
+    public ClientePresenter clientePresenter() {
+        return new ClientePresenterFormatter();
     }
 
     @Bean
-    public IdentificarClienteUseCaseImpl identificarCliente(ClienteGateway clienteGateway) {
-        return new IdentificarClienteUseCaseImpl(clienteGateway);
+    public IdentificarClientePresenter identificarClientePresenter() {
+        return new IdentificarClientePresenterFormatter();
+    }
+
+    @Bean
+    public CadastrarClienteInteractor cadastrarClienteInteractor(
+            ClienteGateway clienteGateway,
+            ClienteFactory clienteFactory,
+            ClientePresenter clientePedidoPresenter
+    ) {
+        return new CadastrarClienteInteractor(
+                clienteGateway,
+                clienteFactory,
+                clientePedidoPresenter
+        );
+    }
+
+    @Bean
+    public IdentificarClienteInteractor identificarCliente(
+            ClienteGateway clienteGateway,
+            ClienteFactory clienteFactory,
+            IdentificarClientePresenter identificarClientePresenter
+    ) {
+        return new IdentificarClienteInteractor(
+                clienteGateway,
+                clienteFactory,
+                identificarClientePresenter
+        );
     }
 
     @Bean
@@ -88,8 +114,8 @@ public class BeansConfig {
     }
 
     @Bean
-    public MPPagamentoFactory mpPagamentoFactory() {
-        return new MPPagamentoFactoryImpl();
+    public PagamentoFactory mpPagamentoFactory() {
+        return new PagamentoFactoryImpl();
     }
 
     @Bean
@@ -98,7 +124,17 @@ public class BeansConfig {
     }
 
     @Bean
-    public CadastrarProdutoInteractor cadastrarProduto(
+    public PedidoPagamentoFactory pagamentoFactory() {
+        return new PedidoPagamentoFactoryImpl();
+    }
+
+    @Bean
+    public ConsultarPagamentoPresenter consultarPagamentoPresenter() {
+        return new ConsultarPagamentoResponseFormatter();
+    }
+
+    @Bean
+    public CadastrarProdutoInteractor cadastrarProdutoInteractor(
             ProdutoGateway produtoGateway, CategoriaGateway
             categoriaGateway,
             ProdutoPresenter produtoPresenter,
@@ -113,7 +149,7 @@ public class BeansConfig {
     }
 
     @Bean
-    public EditarProdutoInteractor editarProduto(
+    public EditarProdutoInteractor editarProdutoInteractor(
             ProdutoGateway produtoGateway,
             CategoriaGateway categoriaGateway,
             ProdutoPresenter produtoPresenter,
@@ -127,7 +163,7 @@ public class BeansConfig {
     }
 
     @Bean
-    public RemoverProdutoInteractor removerProduto(
+    public RemoverProdutoInteractor removerProdutoInteractor(
             ProdutoGateway produtoGateway,
             ProdutoPresenter produtoPresenter
     ) {
@@ -145,7 +181,10 @@ public class BeansConfig {
             PedidoPresenter pedidoPresenter,
             PedidoFactory pedidoFactory,
             PedidoItemFactory pedidoItemFactory,
-            MercadoPagoGateway mercadoPagoGateway
+            MercadoPagoGateway mercadoPagoGateway,
+            PagamentoFactory pagamentoFactory,
+            PedidoPagamentoFactory pedidoPagamentoFactory,
+            PedidoPagamentoGateway pedidoPagamentoGateway
     ) {
         return new CadastrarPedidoInteractor(
                 pedidoGateway,
@@ -154,12 +193,14 @@ public class BeansConfig {
                 pedidoPresenter,
                 pedidoFactory,
                 pedidoItemFactory,
-                mercadoPagoGateway
-        );
+                mercadoPagoGateway,
+                pagamentoFactory,
+                pedidoPagamentoFactory,
+                pedidoPagamentoGateway);
     }
 
     @Bean
-    public AtualizarPedidoInteractor AtualizarPedidoInteractor(
+    public AtualizarPedidoInteractor atualizarPedidoInteractor(
             PedidoGateway pedidoGateway,
             PedidoFactory pedidoFactory,
             AtualizarPedidoPresenter atualizarPedidoPresenter
@@ -172,7 +213,10 @@ public class BeansConfig {
     }
 
     @Bean
-    public ListarPedidoInteractor ListarPedidoInteractor(PedidoGateway pedidoGateway, PedidoPresenter pedidoPresenter) {
+    public ListarPedidoInteractor listarPedidoInteractor(
+            PedidoGateway pedidoGateway,
+            PedidoPresenter pedidoPresenter
+    ) {
         return new ListarPedidoInteractor(
                 pedidoGateway,
                 pedidoPresenter
@@ -181,10 +225,29 @@ public class BeansConfig {
 
     @Bean
     public WebhookPagamentoInteractor webhookPagamentoInteractor(
-            MercadoPagoGateway mercadoPagoGateway
+            MercadoPagoGateway mercadoPagoGateway,
+            PedidoPagamentoGateway pedidoPagamentoGateway,
+            PedidoFactory pedidoFactory,
+            PedidoPagamentoFactory pedidoPagamentoFactory,
+            PedidoGateway pedidoGateway
     ) {
         return new WebhookPagamentoInteractor(
-                mercadoPagoGateway
+                mercadoPagoGateway,
+                pedidoPagamentoGateway,
+                pedidoFactory,
+                pedidoPagamentoFactory,
+                pedidoGateway
+        );
+    }
+
+    @Bean
+    public ConsultarPagamentoPedidoInteractor consultarPagamentoPedidoInteractor(
+            PedidoPagamentoGateway pedidoPagamentoGateway,
+            ConsultarPagamentoPresenter consultarPagamentoPresenter
+    ) {
+        return new ConsultarPagamentoPedidoInteractor(
+                pedidoPagamentoGateway,
+                consultarPagamentoPresenter
         );
     }
 }

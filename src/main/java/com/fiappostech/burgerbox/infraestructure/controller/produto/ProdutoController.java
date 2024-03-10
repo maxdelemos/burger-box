@@ -1,38 +1,59 @@
 package com.fiappostech.burgerbox.infraestructure.controller.produto;
 
-import com.fiappostech.burgerbox.core.usecase.produto.CadastrarProdutoBoundary;
-import com.fiappostech.burgerbox.core.usecase.produto.EditarProdutoBoundary;
-import com.fiappostech.burgerbox.core.usecase.produto.RemoverProdutoBoundary;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.request.ProdutoCadastrarRequestModel;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.request.ProdutoRequestModel;
 import com.fiappostech.burgerbox.infraestructure.controller.produto.response.ProdutoResponseModel;
-import lombok.AllArgsConstructor;
+import com.fiappostech.burgerbox.infraestructure.swagger.ConflictException;
+import com.fiappostech.burgerbox.infraestructure.swagger.InternalServerErrorException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Tag(name = "Produtos")
 @RequestMapping("/api/produtos")
-@AllArgsConstructor
-public class ProdutoController {
-    private final CadastrarProdutoBoundary cadastrarProdutoBoundary;
-    private final EditarProdutoBoundary editarProdutoBoundary;
-    private final RemoverProdutoBoundary removerProdutoUseCase;
+public interface ProdutoController {
 
+    @Operation(summary = "Cadastrar um produto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto cadastrado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Requisição inválida",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ConflictException.class))}),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InternalServerErrorException.class))})
+    })
     @PostMapping
-    public ResponseEntity<ProdutoResponseModel> cadastrar(@RequestBody ProdutoCadastrarRequestModel produtoCadastrarRequestModel) {
-        ProdutoResponseModel responseModel = cadastrarProdutoBoundary.execute(produtoCadastrarRequestModel);
-        return ResponseEntity.ok(responseModel);
-    }
+    ResponseEntity<ProdutoResponseModel> cadastrar(@RequestBody ProdutoCadastrarRequestModel produtoCadastrarRequestModel);
 
+    @Operation(summary = "Editar um produto pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto editado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Requisição inválida",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ConflictException.class))}),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InternalServerErrorException.class))})
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseModel> editar(@PathVariable Long id, @RequestBody ProdutoRequestModel produtoRequestModel) {
-        ProdutoResponseModel responseModel = editarProdutoBoundary.execute(id, produtoRequestModel);
-        return ResponseEntity.ok(responseModel);
-    }
+    ResponseEntity<ProdutoResponseModel> editar(@PathVariable Long id, @RequestBody ProdutoRequestModel produtoRequestModel);
 
+    @Operation(summary = "Remover um produto pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto removido com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Requisição inválida",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ConflictException.class))}),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InternalServerErrorException.class))})
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProdutoResponseModel> remover(@PathVariable Long id) {
-        ProdutoResponseModel responseModel = removerProdutoUseCase.execute(id);
-        return ResponseEntity.ok(responseModel);
-    }
+    ResponseEntity<ProdutoResponseModel> remover(@PathVariable Long id);
 }

@@ -10,5 +10,5 @@ public interface PedidoGateway {
     Pedido editar(Pedido pedido);
     Boolean statusPedidoExiste(String status);
     List<Pedido> listar();
-    Pedido buscarPorIdTeste(Long id);
+    void atualizarPagamento(Long id);
 }

@@ -5,9 +5,9 @@ import com.fiappostech.burgerbox.core.entity.produto.CategoriaFactory;
 import com.fiappostech.burgerbox.core.entity.produto.Produto;
 import com.fiappostech.burgerbox.core.entity.produto.ProdutoFactory;
 import com.fiappostech.burgerbox.core.gateway.ProdutoGateway;
-import com.fiappostech.burgerbox.infraestructure.persistence.categoria.CategoriaEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoRepository;
+import com.fiappostech.burgerbox.infraestructure.persistence.CategoriaEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.ProdutoEntity;
+import com.fiappostech.burgerbox.infraestructure.persistence.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

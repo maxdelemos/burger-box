@@ -1,5 +1,7 @@
 package com.fiappostech.burgerbox.core.entity.pedido;
 
+import com.fiappostech.burgerbox.core.entity.pagamento.Pagamento;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +11,8 @@ public class PedidoImpl implements Pedido {
     private List<PedidoItem> pedidoItem;
     private String status;
     private LocalDateTime dataAtualizacao;
+    private Pagamento pagamento;
+    private PedidoPagamento pedidoPagamento;
 
     public PedidoImpl(Long id, String status, List<PedidoItem> pedidoItem, LocalDateTime dataAtualizacao) {
         this.id = id;
@@ -17,20 +21,32 @@ public class PedidoImpl implements Pedido {
         this.pedidoItem = pedidoItem;
     }
 
+    public PedidoImpl(Long id, String status, PedidoPagamento pedidoPagamento) {
+        this.id = id;
+        this.status = status;
+        this.pedidoPagamento = pedidoPagamento;
+    }
+
     public PedidoImpl(Long id, String status, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.status = status;
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public PedidoImpl(Long clienteId, List<PedidoItem> pedidoItem) {
+    public PedidoImpl(Long clienteId, List<PedidoItem> pedidoItem, Pagamento pagamento) {
         this.clienteId = clienteId;
         this.pedidoItem = pedidoItem;
+        this.pagamento = pagamento;
     }
 
     public PedidoImpl(Long id, String status) {
         this.id = id;
         this.status = status;
+    }
+
+    public PedidoImpl(Long id, Pagamento pagamento) {
+        this.id = id;
+        this.pagamento = pagamento;
     }
 
 
@@ -41,6 +57,11 @@ public class PedidoImpl implements Pedido {
     @Override
     public Long getClienteId() {
         return this.clienteId;
+    }
+
+    @Override
+    public Pagamento getPagamento() {
+        return this.pagamento;
     }
 
     @Override
@@ -56,6 +77,11 @@ public class PedidoImpl implements Pedido {
     @Override
     public LocalDateTime getDataAtualizacao() {
         return this.dataAtualizacao;
+    }
+
+    @Override
+    public PedidoPagamento getPedidoPagamento() {
+        return this.pedidoPagamento;
     }
 
     public void setId(Long id) {

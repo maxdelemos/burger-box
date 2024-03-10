@@ -1,43 +1,33 @@
 package com.fiappostech.burgerbox.infraestructure.controller.cliente;
 
-import com.fiappostech.burgerbox.core.entity.ClienteDomain;
-import com.fiappostech.burgerbox.core.usecase.cliente.CadastrarClienteUseCase;
-import com.fiappostech.burgerbox.core.usecase.cliente.IdentificarClienteUseCase;
-import com.fiappostech.burgerbox.infraestructure.controller.cliente.mapper.CadastrarClienteMapper;
-import com.fiappostech.burgerbox.infraestructure.controller.cliente.mapper.IdentificarClienteMapper;
-import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarInput;
-import com.fiappostech.burgerbox.infraestructure.dto.cliente.ClienteCadastrarOutput;
-import com.fiappostech.burgerbox.infraestructure.dto.cliente.IdentificarClienteInput;
-import com.fiappostech.burgerbox.infraestructure.dto.cliente.IdentificarClienteOutput;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.request.ClienteRequestModel;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.request.IdentificarRequestModel;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.ClienteResponseModel;
+import com.fiappostech.burgerbox.infraestructure.controller.cliente.response.IdentificarClienteResponseModel;
+import com.fiappostech.burgerbox.infraestructure.swagger.ConflictException;
+import com.fiappostech.burgerbox.infraestructure.swagger.InternalServerErrorException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/cliente")
-@AllArgsConstructor
-public class ClienteController {
+@Tag(name = "Clientes")
+@RequestMapping("/api/clientes")
+public interface ClienteController {
 
-    private final CadastrarClienteUseCase createClienteUseCase;
-    private final IdentificarClienteUseCase identificarClienteUseCase;
+    @Operation(summary = "Cadastrar um cliente")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso"), @ApiResponse(responseCode = "409", description = "Requisição inválida", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ConflictException.class))}), @ApiResponse(responseCode = "500", description = "Erro interno no servidor", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerErrorException.class))})})
+    @PostMapping
+    ResponseEntity<ClienteResponseModel> cadastrar(@RequestBody ClienteRequestModel clienteRequestModel);
 
-    @PostMapping("/cadastrar")
-    public ClienteCadastrarOutput cadastrar(@RequestBody @Valid ClienteCadastrarInput clienteInput) {
-        ClienteDomain clienteDomain = CadastrarClienteMapper.INSTANCE.toDomain(clienteInput);
-        ClienteDomain novoClienteDomain = createClienteUseCase.execute(clienteDomain);
-        ClienteCadastrarOutput clienteOutput = CadastrarClienteMapper.INSTANCE.toOutput(novoClienteDomain);
-        return clienteOutput;
-    }
-
+    @Operation(summary = "Identificar um cliente")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cliente identificado com sucesso"), @ApiResponse(responseCode = "409", description = "Requisição inválida", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ConflictException.class))}), @ApiResponse(responseCode = "500", description = "Erro interno no servidor", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerErrorException.class))})})
     @PostMapping("/identificar")
-    public ResponseEntity<IdentificarClienteOutput> identificar(@RequestBody IdentificarClienteInput identificarClienteInput) {
-        ClienteDomain clienteDomain = IdentificarClienteMapper.INSTANCE.toDomain(identificarClienteInput);
-        ClienteDomain clienteIdentificado = identificarClienteUseCase.execute(clienteDomain);
-        IdentificarClienteOutput identificarClienteOutput = IdentificarClienteMapper.INSTANCE.toOutput(clienteIdentificado);
-        return ResponseEntity.ok(identificarClienteOutput);
-    }
+    ResponseEntity<IdentificarClienteResponseModel> identificar(@RequestBody IdentificarRequestModel identificarClienteRequestModel);
 }

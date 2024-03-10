@@ -1,17 +1,15 @@
 package com.fiappostech.burgerbox.core.gateway;
 
-import com.fiappostech.burgerbox.core.entity.ClienteDomain;
 import com.fiappostech.burgerbox.core.entity.cliente.Cliente;
-import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
-
-import java.util.Optional;
 
 public interface ClienteGateway {
-    ClienteDomain cadastrar(ClienteDomain clienteDomain);
+    Cliente cadastrar(Cliente cliente);
 
-    ClienteDomain buscarPorCpf(String cpf);
+    Cliente buscarPorEmail(String email);
 
-    ClienteDomain salvar(ClienteDomain clienteDomain);
+    Cliente buscarPorCpf(String cpf);
+
+    Cliente identificar(Cliente cliente);
 
     Cliente buscarPorId(Long id);
 }

@@ -15,9 +15,19 @@ CREATE TABLE pedido_item (
   data_atualizacao timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE pedido_pagamento (
+  id SERIAL PRIMARY KEY,
+  pedido_id integer,
+  pagamento_id BIGINT,
+  status varchar(50),
+  data_criacao timestamp DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE cliente (
   id SERIAL PRIMARY KEY,
   nome varchar,
+  email varchar,
   cpf varchar,
   data_criacao timestamp DEFAULT CURRENT_TIMESTAMP,
   data_atualizacao timestamp DEFAULT CURRENT_TIMESTAMP
@@ -37,6 +47,7 @@ CREATE TABLE produto (
 ALTER TABLE pedido_item ADD FOREIGN KEY (pedido_id) REFERENCES pedido (id);
 ALTER TABLE pedido_item ADD FOREIGN KEY (produto_id) REFERENCES produto (id);
 ALTER TABLE pedido ADD FOREIGN KEY (cliente_id) REFERENCES cliente (id);
+ALTER TABLE pedido_pagamento ADD FOREIGN KEY (pedido_id) REFERENCES pedido (id);
 
 CREATE TABLE categoria (
   id SERIAL PRIMARY KEY,
@@ -60,20 +71,20 @@ INSERT INTO categoria (id, descricao, codigo) VALUES (4, 'Sobremesa', 'SOBREMESA
 
 -- Inserção de produtos para cada categoria
 -- Lanches
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (1, 'Hambúrguer', 'Delicioso hambúrguer com carne, queijo, alface e tomate', 'url_da_imagem', 10.99);
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (2, 'Sanduíche de Frango', 'Sanduíche de frango grelhado com alface, tomate e maionese', 'url_da_imagem', 8.99);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (1, 'Hambúrguer', 'Delicioso hambúrguer com carne, queijo, alface e tomate', 'https://tse1.mm.bing.net/th/id/OIG2.kShMvPSvECE4IgcA9WqO?pid=ImgGn', 0.01);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (2, 'Sanduíche de Frango', 'Sanduíche de frango grelhado com alface, tomate e maionese', 'https://tse4.mm.bing.net/th/id/OIG4.SZSyuFiHtPAyOODoIwH.?pid=ImgGn', 0.02);
 
 -- Acompanhamentos
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (3, 'Batata Frita', 'Porção de batatas fritas crocantes', 'url_da_imagem', 4.99);
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (4, 'Onion Rings', 'Anéis de cebola empanados e fritos', 'url_da_imagem', 5.99);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (3, 'Batata Frita', 'Porção de batatas fritas crocantes', 'https://tse3.mm.bing.net/th/id/OIG4.BO6omYQw9eCDAzZofMDO?pid=ImgGn', 0.03);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (4, 'Onion Rings', 'Anéis de cebola empanados e fritos', 'https://tse1.mm.bing.net/th/id/OIG2.7uVdoMazEhg1TyaiYRcr?pid=ImgGn', 0.04);
 
 -- Bebidas
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (5, 'Refrigerante', 'Lata de refrigerante de cola 350ml', 'url_da_imagem', 3.49);
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (6, 'Suco Natural', 'Suco de laranja natural 300ml', 'url_da_imagem', 4.99);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (5, 'Refrigerante', 'Lata de refrigerante de cola 350ml', 'https://tse1.mm.bing.net/th/id/OIG2.DKmwwZO9VUyDRG3n7aXK?pid=ImgGn', 0.05);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (6, 'Suco Natural', 'Suco de laranja natural 300ml', 'https://tse1.mm.bing.net/th/id/OIG3.t188eRGyzlc7_ZH1XTFR?pid=ImgGn', 0.06);
 
 -- Sobremesas
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (7, 'Sundae', 'Sorvete de baunilha com calda de chocolate e chantilly', 'url_da_imagem', 6.99);
-INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (8, 'Brownie com Sorvete', 'Brownie de chocolate quente servido com sorvete de creme', 'url_da_imagem', 7.99);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (7, 'Sundae', 'Sorvete de baunilha com calda de chocolate e chantilly', 'https://tse3.mm.bing.net/th/id/OIG4.ZdXKsVSdVuqylnFYe4if?pid=ImgGn', 0.07);
+INSERT INTO produto (id, nome, descricao, imagem, preco) VALUES (8, 'Brownie com Sorvete', 'Brownie de chocolate quente servido com sorvete de creme', 'https://tse1.mm.bing.net/th/id/OIG4.u7mIGkbpZa4ux6H4bOr.?pid=ImgGn', 0.08);
 
 INSERT INTO produto_categoria (produto_id, categoria_id) VALUES(1, 1);
 INSERT INTO produto_categoria (produto_id, categoria_id) VALUES(2, 1);

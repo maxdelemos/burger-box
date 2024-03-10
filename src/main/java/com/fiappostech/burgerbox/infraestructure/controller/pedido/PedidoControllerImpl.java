@@ -1,6 +1,6 @@
 package com.fiappostech.burgerbox.infraestructure.controller.pedido;
 
-import com.fiappostech.burgerbox.core.entity.pedido.MPPagamentoWebhook;
+import com.fiappostech.burgerbox.core.entity.pagamento.PagamentoWebhook;
 import com.fiappostech.burgerbox.core.usecase.pedido.*;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.AtualizarStatusPedidoRequestModel;
 import com.fiappostech.burgerbox.infraestructure.controller.pedido.request.PedidoRequestModel;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
 @AllArgsConstructor
 public class PedidoControllerImpl implements PedidoController {
     private final CadastrarPedidoBoundary cadastrarPedidoBoundary;
     private final AtualizarPedidoBoundary atualizarPedidoBoundary;
     private final ListarPedidoBoundary listarPedidoBoundary;
     private final WebhookPagamentoBoundary webhookPagamentoBoundary;
+    private final ConsultarPagamentoPedidoInteractor consultarPagamentoPedidoInteractor;
 
     @PostMapping
     public ResponseEntity<PedidoResponseModel> cadastrar(@RequestBody PedidoRequestModel pedidoRequestModel) {
@@ -32,12 +32,12 @@ public class PedidoControllerImpl implements PedidoController {
     }
 
     @GetMapping("/{id}/status-pagamento")
-    public ResponseEntity<Object> statusPagamento(@PathVariable Object o) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Object> statusPagamento(@PathVariable Long id) {
+        return ResponseEntity.ok(consultarPagamentoPedidoInteractor.execute(id));
     }
 
     @PostMapping("/webhooks/pagamento")
-    public void webhooksPagamento(@RequestBody MPPagamentoWebhook mpPagamentoWebhook) {
+    public void webhooksPagamento(@RequestBody PagamentoWebhook mpPagamentoWebhook) {
         webhookPagamentoBoundary.execute(mpPagamentoWebhook);
     }
 

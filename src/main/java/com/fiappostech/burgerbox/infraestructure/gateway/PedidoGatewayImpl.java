@@ -1,18 +1,8 @@
 package com.fiappostech.burgerbox.infraestructure.gateway;
 
-import com.fiappostech.burgerbox.core.entity.pedido.Pedido;
-import com.fiappostech.burgerbox.core.entity.pedido.PedidoFactory;
-import com.fiappostech.burgerbox.core.entity.pedido.PedidoItem;
-import com.fiappostech.burgerbox.core.entity.pedido.PedidoItemFactory;
+import com.fiappostech.burgerbox.core.entity.pedido.*;
 import com.fiappostech.burgerbox.core.gateway.PedidoGateway;
-import com.fiappostech.burgerbox.infraestructure.persistence.cliente.ClienteEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.enums.StatusPedidoEnum;
-import com.fiappostech.burgerbox.infraestructure.persistence.pedido.ListaPedidoProjection;
-import com.fiappostech.burgerbox.infraestructure.persistence.pedido.PedidoEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.pedido.PedidoRepository;
-import com.fiappostech.burgerbox.infraestructure.persistence.pedidoItem.PedidoItemEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoEntity;
-import com.fiappostech.burgerbox.infraestructure.persistence.produto.ProdutoRepository;
+import com.fiappostech.burgerbox.infraestructure.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,28 +23,36 @@ public class PedidoGatewayImpl implements PedidoGateway {
     @Override
     @Transactional
     public Pedido cadastrar(Pedido pedido) {
-        PedidoEntity pedidoEntity = new PedidoEntity();
+        LocalDateTime dataAtual = LocalDateTime.now();
+        PedidoEntity novoPedido = new PedidoEntity();
 
-        List<PedidoItemEntity> produtosEntities = preencherPedidoItem(pedido, pedidoEntity);
+        PedidoPagamentoEntity novoPedidoPagamento = new PedidoPagamentoEntity();
+        novoPedidoPagamento.setPedido(novoPedido);
+        novoPedidoPagamento.setPagamentoId(pedido.getPagamento().getId());
+        novoPedidoPagamento.setStatus(StatusPagamentoEnum.buscarPorCodigo(pedido.getPagamento().getStatus()));
+        novoPedidoPagamento.setDataAtualizacao(dataAtual);
+        novoPedidoPagamento.setDataCriacao(dataAtual);
 
-        pedidoEntity.setCliente(ClienteEntity.builder().id(pedido.getClienteId()).build());
-        StatusPedidoEnum statusPedido = StatusPedidoEnum.RECEBIDO;
-        pedidoEntity.setStatus(statusPedido);
-        pedidoEntity.setPedidoItem(produtosEntities);
-        pedidoEntity.setDataCriacao(LocalDateTime.now());
-        pedidoEntity.setDataAtualizacao(LocalDateTime.now());
+        novoPedido.setPedidoPagamento(novoPedidoPagamento);
+        novoPedido.setCliente(ClienteEntity.builder().id(pedido.getClienteId()).build());
+        List<PedidoItemEntity> produtosEntities = preencherPedidoItem(pedido, novoPedido);
+        novoPedido.setPedidoItem(produtosEntities);
+        novoPedido.setDataCriacao(dataAtual);
+        novoPedido.setDataAtualizacao(dataAtual);
 
-        PedidoEntity pedidoCadastrado = pedidoRepository.saveAndFlush(pedidoEntity);
+        PedidoEntity pedidoCadastrado = pedidoRepository.saveAndFlush(novoPedido);
 
-        List<PedidoItem> pedidoItems = pedidoCadastrado.getPedidoItem().stream().map(item -> pedidoItemFactory.create(
-                item.getId(),
-                item.getQuantidade(),
-                item.getProduto().getPreco()
-        )).toList();
+        List<PedidoItem> pedidoItems = pedidoCadastrado.getPedidoItem()
+                .stream()
+                .map(item -> pedidoItemFactory.create(
+                        item.getId(),
+                        item.getQuantidade(),
+                        item.getProduto().getPreco()
+                )).toList();
 
         return pedidoFactory.create(
                 pedidoCadastrado.getId(),
-                pedidoCadastrado.getStatus().getCodigo(),
+                Objects.nonNull(pedidoCadastrado.getStatus()) ? pedidoCadastrado.getStatus().getCodigo() : "",
                 pedidoItems,
                 pedidoCadastrado.getDataAtualizacao()
         );
@@ -65,7 +63,7 @@ public class PedidoGatewayImpl implements PedidoGateway {
 
         pedidoRepository.atualizarStatus(
                 pedido.getId(),
-                Objects.requireNonNull(StatusPedidoEnum.buscarPorCodigo(pedido.getStatus())).getCodigo()
+                Objects.nonNull(pedido.getStatus()) ? Objects.requireNonNull(StatusPedidoEnum.buscarPorCodigo(pedido.getStatus())).getCodigo() : ""
         );
 
         Optional<PedidoEntity> pedidoEditado = pedidoRepository.findById(pedido.getId());
@@ -95,9 +93,14 @@ public class PedidoGatewayImpl implements PedidoGateway {
     }
 
     @Override
-    public Pedido buscarPorIdTeste(Long id) {
-        PedidoEntity pedido = pedidoRepository.buscarPorIdTeste(id);
-        return null;
+    public void atualizarPagamento(Long pedidoId) {
+        Optional<PedidoEntity> pedidoEntity = pedidoRepository.findById(pedidoId);
+        if (pedidoEntity.isPresent()) {
+            pedidoEntity.get().setStatus(StatusPedidoEnum.RECEBIDO);
+            pedidoEntity.get().setDataAtualizacao(LocalDateTime.now());
+            pedidoRepository.saveAndFlush(pedidoEntity.get());
+        }
+
     }
 
     @Override
@@ -111,7 +114,7 @@ public class PedidoGatewayImpl implements PedidoGateway {
                 .stream()
                 .map(produto -> PedidoItemEntity
                         .builder()
-                        .produto(produtoRepository.findById(produto.getId()).get())
+                        .produto(produtoRepository.findById(produto.geProdutoId()).get())
                         .pedido(pedidoEntity)
                         .quantidade(produto.getQuantidade())
                         .dataCriacao(LocalDateTime.now())

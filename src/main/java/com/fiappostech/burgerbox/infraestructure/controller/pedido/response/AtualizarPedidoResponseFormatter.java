@@ -5,12 +5,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class AtualizarPedidoResponseFormatter implements AtualizarPedidoPresenter {
     @Override
-    public AtualizarPedidoResponseModel prepareSuccessView(AtualizarPedidoResponseModel atualizarPedidoResponseModel) {
-        return atualizarPedidoResponseModel;
+    public AtualizarPedidoResponseModel prepareFailView(String error) {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, error);
     }
 
     @Override
-    public AtualizarPedidoResponseModel prepareFailView(String error) {
-        throw new ResponseStatusException(HttpStatus.CONFLICT, error);
+    public AtualizarPedidoResponseModel prepareSuccessView(AtualizarPedidoResponseModel atualizarPedidoResponseModel) {
+        return atualizarPedidoResponseModel;
     }
 }

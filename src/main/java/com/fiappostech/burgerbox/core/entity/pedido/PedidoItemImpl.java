@@ -17,7 +17,7 @@ public class PedidoItemImpl implements PedidoItem {
     }
 
     @Override
-    public Long getId() {
+    public Long geProdutoId() {
         return this.id;
     }
 
