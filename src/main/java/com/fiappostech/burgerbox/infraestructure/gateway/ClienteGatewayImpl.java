@@ -35,6 +35,7 @@ public class ClienteGatewayImpl implements ClienteGateway {
         return clienteFactory.create(
                 pessoaCadastrada.getId(),
                 pessoaCadastrada.getNome(),
+                pessoaCadastrada.getCpf(),
                 pessoaCadastrada.getEmail(),
                 pessoaCadastrada.getDataCriacao(),
                 pessoaCadastrada.getDataAtualizacao()

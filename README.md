@@ -20,3 +20,18 @@ Rodar a aplicação
 Acessando a documentação da api
 
 [Swagger](http://localhost:9000/swagger-ui/index.html) ou [Redoc](http://localhost:9000/redoc)
+
+---
+
+```
+#!/bin/bash
+
+# Comando para excluir a pasta no host
+rm -rf /caminho/da/pasta
+
+# Construa a imagem Docker
+docker build -t nome_da_imagem .
+
+
+- docker build -t burger-box --build-arg .
+``` 

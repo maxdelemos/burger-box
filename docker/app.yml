@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres
+    restart: always 
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - /tmp/data/burgerbox.db:/var/lib/postgresql/data
+      - ../src/main/resources/db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '7575:5432'
+    networks:
+      - bb-network
+
+  bb-app:
+    image: burger-box:latest
+    ports:
+      - 9000:9000
+    depends_on:
+      - postgres
+    networks:
+      - bb-network
+  ngrok:
+    image: ngrok/ngrok
+    environment:
+      - NGROK_AUTHTOKEN=2dQTpARqtVUv8iHy9jNeshSm8X9_53YoaF1y5coGUKgoYEEQ2
+    command: ["http", "--domain=mouse-arriving-lively.ngrok-free.app", "bb-app:9000"]
+    depends_on:
+      - bb-app
+    networks:
+      - bb-network
+
+networks:
+  bb-network:

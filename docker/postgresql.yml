@@ -10,7 +10,7 @@ services:
       - ../data/burgerbox.db:/var/lib/postgresql/data
       - ../src/main/resources/db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - '7777:5432'
+      - '7575:5432'
 
   adminer:
     image: adminer
