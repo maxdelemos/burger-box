@@ -15,7 +15,7 @@ services:
       - bb-network
   
   bb-app:
-    image: burger-box:latest
+    build: ../
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/burgerbox?useSSL=false
     ports:
