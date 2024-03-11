@@ -1,21 +1,46 @@
+- [ ]
+
 ## Burger Box
 O Burger Box é uma solução de autoatendimento desenvolvida para restaurantes de fast food. Com sua integração fácil e intuitiva, os estabelecimentos podem oferecer aos clientes a capacidade de fazer pedidos e visualizar de forma rápida e conveniente. Esta solução simplifica o processo de automação, permitindo uma experiência de autoatendimento eficiente e personalizável para clientes e proprietários de restaurantes.
 
-## Requisitos
-- java 21
+## O que foi utilizado nesse projeto
 - Docker
+- Minikube
+- Ngrok
+- Spring Boot
+- Java
+- Postgres
 
-## Executando o projeto
+# Executando o projeto com docker
+Subir os container do postgres, api e ngrok
+
+> Entre na raiz do projeto e execute o comando
+```bash
+docker-compose -f docker/app.yml up -d
+```
+
+> Verifique se os container estão rodando
+```bash
+docker ps
+```
+ As portas utilizadas:
+ 7575 - Postgres
+ 9000 - Api
+
+Volume do postgres:
+```bash
+data/burgerbox.db
+```
+
+
+## Realizando um checkout
 
 Subir o container do banco de dados
 ```
 docker-compose -f docker/postgresql.yml up -d
 ```
 
-Rodar a aplicação
-```
-./mvnw spring-boot:run
-```
+
 
 Acessando a documentação da api
 
@@ -53,4 +78,13 @@ kubectl delete -f postgres.yml
 
 kubectl delete -f app.yml
 
+```
+
+## Executando o projeto com k8s
+
+## Executando o projeto em desenvolvimento
+
+Rodar a aplicação
+```
+./mvnw spring-boot:run
 ```

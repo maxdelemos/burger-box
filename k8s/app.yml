@@ -50,19 +50,19 @@ spec:
         app: burguer-box-backend
     spec:
       containers:
-      # - name: ngrok-container
-      #   image: ngrok/ngrok
-      #   env:
-      #     - name: NGROK_AUTHTOKEN
-      #       value: 2dQTpARqtVUv8iHy9jNeshSm8X9_53YoaF1y5coGUKgoYEEQ2
-      #   resources:
-      #     limits:
-      #       cpu: "1"
-      #       memory: "512Mi"
-      #     requests:
-      #       cpu: "0.250"
-      #       memory: "64Mi"
-      #   command: ["ngrok", "http", "--domain=mouse-arriving-lively.ngrok-free.app","burguer-box-backend:9000"]
+      - name: ngrok-container
+        image: ngrok/ngrok
+        env:
+          - name: NGROK_AUTHTOKEN
+            value: 2dQTpARqtVUv8iHy9jNeshSm8X9_53YoaF1y5coGUKgoYEEQ2
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "0.250"
+            memory: "64Mi"
+        command: ["ngrok", "http", "--domain=mouse-arriving-lively.ngrok-free.app","burguer-box-backend:9000"]
       - name: burguer-box-backend
         image: devvelejar/burger-box:latest
         resources:

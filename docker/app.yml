@@ -13,15 +13,18 @@ services:
       - '7575:5432'
     networks:
       - bb-network
-
+  
   bb-app:
     image: burger-box:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/burgerbox?useSSL=false
     ports:
       - 9000:9000
     depends_on:
       - postgres
     networks:
       - bb-network
+  
   ngrok:
     image: ngrok/ngrok
     environment:
@@ -31,6 +34,5 @@ services:
       - bb-app
     networks:
       - bb-network
-
 networks:
   bb-network:
