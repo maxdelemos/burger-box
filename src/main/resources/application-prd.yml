@@ -3,6 +3,6 @@ spring:
     activate: 
       on-profile: prd
   datasource:
-    url: jdbc:postgresql://postgres/burgerbox
+    url: jdbc:postgresql://postgres-service/burgerbox
     username: user_burgerbox
     password: pass_burgerbox

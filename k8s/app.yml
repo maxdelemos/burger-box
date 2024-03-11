@@ -1,0 +1,103 @@
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: burguer-box-backend-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: burguer-box-backend
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 10
+  
+  behavior:
+    scaleDown:
+      # Quando as métricas indicam que o alvo deve ser reduzido, 
+      # o algoritmo analisa os estados desejados previamente calculados e usa o valor mais alto do 
+      # intervalo especificado.       
+      # No exemplo abaixo, todos os estados desejados dos 
+      # últimos 5 minutos serão considerados.
+      stabilizationWindowSeconds: 300
+      # Para limitar a taxa na qual os pods são removidos pelo HPA a 50% a cada 10s
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 10
+---
+# API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: burguer-box-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: burguer-box-backend
+  template:
+    metadata:
+      labels:
+        app: burguer-box-backend
+    spec:
+      containers:
+      # - name: ngrok-container
+      #   image: ngrok/ngrok
+      #   env:
+      #     - name: NGROK_AUTHTOKEN
+      #       value: 2dQTpARqtVUv8iHy9jNeshSm8X9_53YoaF1y5coGUKgoYEEQ2
+      #   resources:
+      #     limits:
+      #       cpu: "1"
+      #       memory: "512Mi"
+      #     requests:
+      #       cpu: "0.250"
+      #       memory: "64Mi"
+      #   command: ["ngrok", "http", "--domain=mouse-arriving-lively.ngrok-free.app","burguer-box-backend:9000"]
+      - name: burguer-box-backend
+        image: devvelejar/burger-box:latest
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "0.250"
+            memory: "64Mi"
+        ports:
+        - containerPort: 9000
+        env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: pass_burgerbox
+            - name: SPRING_DATASOURCE_USERNAME
+              value: user_burgerbox
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hostname-config
+                  key: postgres_host
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://${POSTGRES_HOST}:5432/burgerbox?useSSL=false
+---
+# API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: burguer-box-backend-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: burguer-box-backend
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000

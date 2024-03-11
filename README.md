@@ -24,14 +24,33 @@ Acessando a documentação da api
 ---
 
 ```
-#!/bin/bash
-
 # Comando para excluir a pasta no host
-rm -rf /caminho/da/pasta
+sudo rm -rf /tmp/data
 
-# Construa a imagem Docker
-docker build -t nome_da_imagem .
+docker build -t burger-box .
+docker tag burger-box:latest devvelejar/burger-box:latest
+docker push devvelejar/burger-box:latest
 
+minikube start
 
-- docker build -t burger-box --build-arg .
-``` 
+kubectl create configmap postgres-sql-configmap --from-file=/home/max/Documents/personal/pos/burger-box/src/main/resources/db/init/001_init.sql
+
+kubectl apply -f postgres.yml
+
+kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres -o jsonpath="{.spec.clusterIP}")
+
+kubectl apply -f app.yml
+
+kubectl port-forward service/postgres 7575:5432
+
+kubectl port-forward service/burguer-box-backend-service 9000:9000
+
+kubectl delete cm hostname-config
+
+kubectl delete cm postgres-sql-configmap
+
+kubectl delete -f postgres.yml
+
+kubectl delete -f app.yml
+
+```

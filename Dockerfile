@@ -1,4 +1,4 @@
-FROM jelastic/maven:3.9.5-temurinjdk-21
+FROM ghcr.io/graalvm/jdk-community:21
 
 WORKDIR /app
 
