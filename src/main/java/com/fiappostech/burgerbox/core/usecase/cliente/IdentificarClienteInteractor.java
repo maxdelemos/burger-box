@@ -26,7 +26,7 @@ public class IdentificarClienteInteractor implements IdentificarClienteBoundary 
 
     @Override
     public IdentificarClienteResponseModel execute(IdentificarRequestModel identificarRequestModel) {
-        Cliente clienteEncontrado = clienteGateway.buscarPorEmail(identificarRequestModel.getCpf());
+        Cliente clienteEncontrado = clienteGateway.buscarPorCpf(identificarRequestModel.getCpf());
         if (!Objects.isNull(clienteEncontrado)) {
             return new IdentificarClienteResponseModel(
                     clienteEncontrado.getId(),
