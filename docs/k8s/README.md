@@ -11,16 +11,16 @@ Subir o minikube
 $ minikube start
 ```
 
-Criar o configmap para o postgres
+Criar o configmap para o postgres, alterar o `{PATH}` pelo path real da sua maquina
 
 ```bash
-$ kubectl create configmap postgres-sql-configmap --from-file=/home/max/Documents/personal/pos/burger-box/src/main/resources/db/init/001_init.sql
+$ kubectl create configmap postgres-sql-configmap --from-file={PATH}/burger-box/src/main/resources/db/init/001_init.sql
 ```
 
 Subir o postgres
 
 ```bash
-$ kubectl apply -f postgres.yml
+$ kubectl apply -f k8s/postgres.yml
 ```
 
 Criar o configmap sendo o hostname-config o IP do cluster que está rodando o banco.
@@ -33,7 +33,7 @@ $ kubectl create configmap hostname-config --from-literal=postgres_host=$(kubect
 Subir a aplicação
 
 ```bash
-$ kubectl apply -f app.yml
+$ kubectl apply -f k8s/app.yml
 ```
 
 Fazer o port-forward para o banco e aplicação
@@ -50,9 +50,9 @@ $ kubectl delete cm hostname-config
 
 $ kubectl delete cm postgres-sql-configmap
 
-$ kubectl delete -f postgres.yml
+$ kubectl delete -f k8s/postgres.yml
 
-$ kubectl delete -f app.yml
+$ kubectl delete -f k8s/app.yml
 ```
 
 ## Acessando a documentação da api
