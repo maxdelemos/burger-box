@@ -26,4 +26,3 @@ Volume do postgres:
 
 - [Collection](../collection/collection.json)
 - [Swagger](http://localhost:9000/swagger-ui/index.html)
-- [Redoc](http://localhost:9000/redoc)
