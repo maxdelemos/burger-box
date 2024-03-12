@@ -12,7 +12,7 @@ O Burger Box é uma solução de autoatendimento desenvolvida para restaurantes 
 - [Java](https://www.oracle.com/br/java/technologies/downloads/)
 - [Postgres](https://www.postgresql.org/)
 
----
+## Por onde começar
 
 - [Executando o projeto com docker](docs/docker/README.md)
 - [Executando o projeto com k8s localmente](docs/k8s/README.md)
